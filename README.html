@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<title>OpenCode の調査</title>
+<style>
+:root{--navy1:#12224d;--navy2:#2f5fbf;--ink:#1c2330;--ink-soft:#4a5568;--line:#d9dfe8;--code-bg:#f4f6fa;--link:#1a4fa0;--accent:var(--navy1);--accent2:var(--navy2);--soft:#f2f5fb;}
+.ch01{--accent:hsl(280,78%,25%);--accent2:hsl(280,58%,55%);--soft:hsl(280,28%,95%);}
+.ch02{--accent:hsl(224,78%,25%);--accent2:hsl(224,58%,55%);--soft:hsl(224,28%,95%);}
+.ch03{--accent:hsl(168,78%,25%);--accent2:hsl(168,58%,55%);--soft:hsl(168,28%,95%);}
+.ch04{--accent:hsl(112,78%,25%);--accent2:hsl(112,58%,55%);--soft:hsl(112,28%,95%);}
+.ch05{--accent:hsl(56,78%,25%);--accent2:hsl(56,58%,55%);--soft:hsl(56,28%,95%);}
+.ch06{--accent:hsl(0,78%,25%);--accent2:hsl(0,58%,55%);--soft:hsl(0,28%,95%);}
+body{margin:0;background:#fff;color:var(--ink,#1c2330);font-family:"Yu Gothic UI","Meiryo",sans-serif;font-size:15.5px;line-height:1.85;}
+.titlebar{background:linear-gradient(135deg,var(--navy1,#12224d),var(--navy2,#2f5fbf));color:#fff;padding:34px 30px 30px;}
+.titlebar .inner{max-width:1600px;margin:0 auto;}
+.titlebar h1{font-size:1.9em;margin:0 0 6px;color:#fff;}
+.titlebar .lead,.titlebar .date{color:#e6ecf8;background:transparent;font-size:.92em;margin:2px 0;}
+.wrap{max-width:1600px;margin:0 auto;padding:0 30px;}
+a{color:var(--link,#1a4fa0);background:transparent;}
+.backlink{margin:18px 0 0;}
+a.back-home{display:inline-block;padding:2px 12px;border-radius:6px;background:linear-gradient(100deg,var(--navy1,#12224d),var(--navy2,#2f5fbf));color:#fff;text-decoration:none;font-weight:700;}
+.toc ol{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;counter-reset:tocnum;}
+.toc ol li{counter-increment:tocnum;}
+.toc ol a{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;width:310px;max-width:100%;padding:6px 12px;border-radius:6px;background:linear-gradient(100deg,var(--accent,#12224d),var(--accent2,#2f5fbf));color:#fff;text-decoration:none;font-weight:700;box-sizing:border-box;}
+.toc ol a::before{content:counter(tocnum) ". ";}
+section{background:linear-gradient(180deg,var(--soft,#f2f5fb),#fff);color:var(--ink,#1c2330);padding:4px 26px 26px;margin:34px 0;border-radius:8px;}
+section h1{background:linear-gradient(100deg,var(--accent,#12224d),var(--accent2,#2f5fbf));color:#fff;padding:14px 20px;margin:26px 0 20px;border-radius:8px;font-size:1.45em;box-shadow:0 3px 10px rgba(0,0,0,.18);}
+section h2{background:linear-gradient(90deg,var(--soft,#f2f5fb),#fff);color:var(--accent,#12224d);border-left:6px solid var(--accent,#12224d);padding:6px 12px;margin:30px 0 12px;font-size:1.2em;}
+code{background:var(--code-bg,#f4f6fa);border:1px solid var(--line,#d9dfe8);color:#17335f;padding:0 4px;border-radius:4px;font-size:.92em;}
+.tablewrap{overflow-x:auto;}
+table{border-collapse:collapse;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.08);margin:10px 0;}
+th{background:linear-gradient(100deg,var(--accent,#12224d),var(--accent2,#2f5fbf));color:#fff;padding:9px 12px;text-align:left;}
+td{background:#fff;color:var(--ink,#1c2330);padding:9px 12px;border-top:1px solid var(--line,#d9dfe8);vertical-align:top;}
+tr:nth-child(even) td{background:#fafbfe;}
+.nowrap{white-space:nowrap;}
+.callout{border-left:6px solid var(--accent,#12224d);background:linear-gradient(180deg,var(--soft,#f2f5fb),#fff);color:var(--ink,#1c2330);border-radius:0 8px 8px 0;padding:10px 16px;margin:14px 0;}
+.callout strong{color:var(--accent,#12224d);background:transparent;}
+footer{max-width:1600px;margin:0 auto;padding:18px 30px 30px;}
+</style>
+</head>
+<body>
+<div class="titlebar"><div class="inner">
+<h1>OpenCode の調査</h1>
+<p class="lead">オープンソースの AI コーディングエージェント OpenCode の素性・機能・使い勝手を、Web の公開情報から調べた記録</p>
+<p class="date">📅 作成: 2026-10-23 / 更新: 2026-10-23</p>
+</div></div>
+<div class="wrap">
+<p class="backlink"><a class="back-home" href="../" title="親サイトへ">⌂</a></p>
+
+<nav class="toc"><ol>
+<li class="ch01"><a href="#ch01">概要</a></li>
+<li class="ch02"><a href="#ch02">素性</a></li>
+<li class="ch03"><a href="#ch03">由来とソースの出所</a></li>
+<li class="ch04"><a href="#ch04">機能と使い勝手</a></li>
+<li class="ch05"><a href="#ch05">Claude との関係</a></li>
+<li class="ch06"><a href="#ch06">評価と出典</a></li>
+</ol></nav>
+
+<section class="ch01" id="ch01">
+<h1>概要</h1>
+<p>OpenCode はターミナルで動く<strong>オープンソースの AI コーディングエージェント</strong>。Claude Code と同じ種類の道具だが、特定の LLM 提供元に縛られない。</p>
+</section>
+
+<section class="ch02" id="ch02">
+<h1>素性</h1>
+<div class="tablewrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="nowrap">開発元</td><td>Anomaly（GitHub 組織 anomalyco）。SST を作ったチームが母体</td></tr>
+<tr><td class="nowrap">リポジトリ</td><td><a href="https://github.com/anomalyco/opencode">anomalyco/opencode</a>（旧 sst/opencode から移転）</td></tr>
+<tr><td class="nowrap">ライセンス</td><td>MIT</td></tr>
+<tr><td class="nowrap">人気</td><td>GitHub のスター約 22 万、フォーク約 2.9 万（2026-10-23 にリポジトリのページで確認）</td></tr>
+<tr><td class="nowrap">公式サイト</td><td><a href="https://opencode.ai/">opencode.ai</a></td></tr>
+</tbody></table></div>
+<div class="callout"><strong>同名の別プロジェクト</strong>: Go 製の同名プロジェクトがあり、Charm 社の「Crush」になったとされる（未確認）。二次情報の「Go 製の CLI」という説明は、こちらとの混同の可能性がある。</div>
+</section>
+
+<section class="ch03" id="ch03">
+<h1>由来とソースの出所</h1>
+<h2>どこで生まれたか</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>日付（JST）</th><th>出来事</th></tr></thead>
+<tbody>
+<tr><td class="nowrap">2025-03-17</td><td>Kujtim Hoxha 氏が Go 製のエージェント「TermAI」を公開（<a href="https://github.com/opencode-ai/opencode">opencode-ai/opencode</a>。現在はアーカイブ済み）</td></tr>
+<tr><td class="nowrap">2025 年春</td><td>SST の開発者 2 名（dax 氏・adam 氏）が参加し、「OpenCode」への改名を提案。dax 氏がドメインを買ったとされる</td></tr>
+<tr><td class="nowrap">2025-05-01</td><td>現在の OpenCode のリポジトリが作られる。TypeScript で書かれ、GitHub 上のフォークではない</td></tr>
+<tr><td class="nowrap">2025-05-21</td><td>Charm 社が Go 版を引き継ぐ形で <a href="https://github.com/charmbracelet/crush">Crush</a> のリポジトリを作る</td></tr>
+</tbody></table></div>
+<p>日付は GitHub の API で取ったリポジトリの作成日。経緯は双方の主張と二次情報による。</p>
+<h2>分裂の経緯（双方の主張が食い違う）</h2>
+<ul>
+<li><strong>Charm 社の主張</strong>（同社 CEO の投稿）: 元の作者は Charm 社の OSS ライブラリ（Bubble Tea など）で TermAI を作った。同社が作者を雇おうとしたところ、SST 側が名前を保ったまま別の組織へ移し、AUR のパッケージも引き取った</li>
+<li><strong>SST 側の主張</strong>（第三者による伝聞）: 2 人は主要な貢献者だった。dax 氏のコミットはまとめられて履歴から消された。OSS のまま続けたかったので、同じ名前で TypeScript に作り直した</li>
+</ul>
+<h2>クリーンルームか</h2>
+<p>クリーンルームではない。元のコードを見ていない人が仕様だけで作った、という資料は見つからない。作り直した開発者は元のプロジェクトに深く関わっていた。発想・名前・操作画面は元のプロジェクトを受け継ぎ、言語は Go から TypeScript に変わった。コードの流用の有無は突き合わせていない。</p>
+<h2>Claude Code のソースが出所という噂</h2>
+<ul>
+<li>一般の検索・Reddit を含めた広い検索のどちらでも、そうした噂・告発は見つからなかった（X は見ていない）</li>
+<li>2026-03-31、Claude Code 2.1.88 の npm パッケージにソースマップ（<code>cli.js.map</code>、59.8 MB）が含まれ、約 51.2 万行・約 1,900 ファイルが復元できる状態になった。Anthropic は「人為的な誤り」と説明した。Anthropic がソースマップを出してしまったのは 3 回目とする報道もある（二次情報）</li>
+<li>それより前の 2025-03-10、難読化を解いた Claude Code を GitHub に載せた開発者に、Anthropic が DMCA の削除要求を出している（TechCrunch、2025-04-25）</li>
+<li>現在の OpenCode のリポジトリは 2025-05-01 に作られ、2026 年の流出より 1 年近く前。2025 年 3 月の件の後だが、OpenCode の側が使ったという報道・告発は無い</li>
+<li>流出をきっかけにした書き直し（claw-code、流出コードに他社モデル対応を足した OpenClaude 等）は別のプロジェクトで、OpenCode とは関係ない</li>
+<li>流出したコードには OpenCode の名前が 2 ファイル以上にあり、「OpenCode の自動スクロールに合わせる」というコメントもあったと報じられている。Claude Code の側が OpenCode を参考にしていた、という向きの話（報じたのは 1 本で、裏付けは無い）</li>
+</ul>
+<div class="callout callout-important"><strong>未確認</strong>: 2025 年 2 月ごろにもソースマップが含まれていた件があったとする記憶があるが、検索では見つからなかった。「3 回目」の報道がこれを指すかは不明。</div>
+</section>
+
+<section class="ch04" id="ch04">
+<h1>機能と使い勝手</h1>
+<h2>使える形</h2>
+<p>ターミナル画面（TUI）・デスクトップアプリ（ベータ版。Mac・Windows・Linux）・IDE 拡張の 3 通り。</p>
+<h2>エージェント</h2>
+<ul>
+<li><code>build</code>: 既定。ファイル編集・コマンド実行ができる</li>
+<li><code>plan</code>: 読み取り専用。編集は既定で拒否、bash は実行前に確認（Tab キーで切り替え）</li>
+<li><code>@general</code>: 調べものや複数手順の作業を任せるサブエージェント</li>
+</ul>
+<h2>LLM と料金</h2>
+<ul>
+<li>API キーを設定すれば、どの提供元のモデルも使える</li>
+<li>Zen: 公式が動作を確かめたモデルを従量課金で使える</li>
+<li>Go: 公開モデルを月 $10 で使える（金額は二次情報）</li>
+</ul>
+<h2>設定と操作</h2>
+<p><code>/init</code> で <code>AGENTS.md</code> を作る。<code>/undo</code>・<code>/redo</code> で変更の取り消し・やり直し。テーマ・キー割り当て・独自コマンドも設定できる。</p>
+<h2>仕組み</h2>
+<p>起動すると裏でサーバ（既定 <code>127.0.0.1:4096</code>）が立ち、TUI はその利用者側として動く。<code>opencode serve</code> でサーバだけを動かせ、OpenAPI 3.1 で外部から自動化できる。</p>
+<div class="callout callout-warning"><strong>外部公開の注意</strong>: 外からつながる場所でサーバを公開すると、画面操作（<code>/tui</code>）や認証情報の設定（<code>PUT /auth/:id</code>）も外から行える。公開するなら <code>OPENCODE_SERVER_PASSWORD</code> でパスワードを設定する。</div>
+<h2>導入</h2>
+<ul>
+<li>install スクリプト、npm・bun・pnpm・yarn、Homebrew、Arch のパッケージ等</li>
+<li>Windows は WSL を推奨。直接入れるなら Chocolatey・Scoop・npm 等</li>
+<li>版 1 と版 2 は同じ <code>opencode</code> コマンドのため同時に入れられない</li>
+</ul>
+<h2>権限</h2>
+<ul>
+<li>道具ごとに <code>allow</code>（そのまま実行）・<code>ask</code>（確認）・<code>deny</code>（拒否）を <code>opencode.json</code> の <code>permission</code> で決める。対象は <code>read</code>・<code>edit</code>・<code>glob</code>・<code>grep</code>・<code>shell</code>・<code>task</code>・<code>webfetch</code>・<code>websearch</code>・<code>external_directory</code>（プロジェクト外）・<code>doom_loop</code>（同じ操作の繰り返し）等</li>
+<li><strong>既定はほとんどが <code>allow</code></strong>。<code>ask</code> は <code>doom_loop</code> と <code>external_directory</code> だけ。<code>.env</code> の読み取りは拒否（<code>.env.example</code> は可）</li>
+<li>コマンドは <code>"git *": "allow"</code>・<code>"rm *": "deny"</code> のように型で書く。最後に当たった規則が勝つので、全体の既定を先に書く</li>
+<li>確認には「今回だけ」「このセッション中は常に」「拒否」で答える。<code>--auto</code> を付けると確認を飛ばす（<code>deny</code> は効く）</li>
+<li>エージェントごとに上書きできる</li>
+</ul>
+<div class="callout callout-warning"><strong>版 2 の既定</strong>: 移行の資料によると、版 2 では <code>external_directory</code> の既定が <code>allow</code> に変わり、プロジェクトの外へも確認なしで出る。版 1 と同じにするには規則を書く必要がある。</div>
+<h2>MCP</h2>
+<ul>
+<li>手元で動かすもの（<code>type: local</code>、<code>command</code> を指定）と、ネット越しのもの（<code>type: remote</code>、<code>url</code> を指定）の両方に対応</li>
+<li>ネット越しのものは 401 を受けると OAuth を始め、トークンを保存する。<code>opencode mcp auth</code>・<code>list</code>・<code>logout</code>・<code>debug</code> で管理する</li>
+<li>MCP の道具は文脈を消費する。GitHub の MCP のように大量に消費するものもある</li>
+</ul>
+<h2>LSP</h2>
+<ul>
+<li>版 1: 約 35 言語の LSP を内蔵し、診断をエージェントへ返す。既定は無効で <code>"lsp": true</code> で有効にする。一部は自動でダウンロードする（<code>OPENCODE_DISABLE_LSP_DOWNLOAD</code> で止める）</li>
+<li>公式も「LSP が常に役立つとは限らない」とし、lint・型検査のコマンドを <code>AGENTS.md</code> に書いて走らせる方法を勧めている</li>
+<li><strong>版 2 では LSP の設定は残るが、言語サーバも診断も動かない</strong>（移行の資料）</li>
+</ul>
+<h2>設定ファイル</h2>
+<p>次の順に重ね合わせ、後のものが勝つ。置き換えではなく統合される。</p>
+<ol>
+<li>組織の既定（<code>.well-known/opencode</code>）</li>
+<li>全体の設定 <code>~/.config/opencode/opencode.json</code></li>
+<li>環境変数 <code>OPENCODE_CONFIG</code> で指したファイル</li>
+<li>プロジェクトの <code>opencode.json</code></li>
+<li><code>.opencode</code> フォルダ（エージェント・コマンド・プラグイン）</li>
+<li>環境変数 <code>OPENCODE_CONFIG_CONTENT</code></li>
+<li>管理者が置く設定（Windows は <code>%ProgramData%\opencode</code>）</li>
+<li>macOS の MDM の構成プロファイル（最優先）</li>
+</ol>
+<h2>Claude Code の資産を読む</h2>
+<ul>
+<li>版 1 は、<code>AGENTS.md</code> が無ければ <code>CLAUDE.md</code> を、全体の <code>AGENTS.md</code> が無ければ <code>~/.claude/CLAUDE.md</code> を読む。<code>~/.claude/skills/</code> も読む</li>
+<li>止めるには <code>OPENCODE_DISABLE_CLAUDE_CODE=1</code>（全部）・<code>_PROMPT</code>・<code>_SKILLS</code>（一部）</li>
+<li>版 2 は <code>AGENTS.md</code> だけを読む（移行の資料）</li>
+</ul>
+<h2>通信とデータ</h2>
+<ul>
+<li>プロキシは <code>HTTPS_PROXY</code>・<code>HTTP_PROXY</code>。TUI と手元のサーバの通信を通さないよう <code>NO_PROXY=localhost,127.0.0.1</code> が要る。社内の CA は <code>NODE_EXTRA_CA_CERTS</code>。NTLM・Kerberos の認証には対応せず、対応した LLM ゲートウェイを挟むよう案内している</li>
+<li><strong>既定で起動時に更新をダウンロードする</strong>。<code>"autoupdate": false</code> で止め、<code>"notify"</code> で通知だけにする</li>
+<li>ソースにある無効化の環境変数: <code>OPENCODE_DISABLE_AUTOUPDATE</code>・<code>_MODELS_FETCH</code>（モデル一覧の取得）・<code>_FREE_MODELS</code>・<code>_PROJECT_CONFIG</code>・<code>_FILEWATCHER</code> 等（GitHub のコード検索で確認）</li>
+<li>テレメトリ: 版 1 に試験的な OpenTelemetry の出力設定があり、版 2 では無視される。OpenCode 自身が利用データを送るかを書いた公式の説明は見つからなかった</li>
+</ul>
+<h2>版 1 → 版 2 の主な変更</h2>
+<ul>
+<li>プラグインの API が変わり、版 1 のプラグインはそのまま動かない。サーバの API も変わった</li>
+<li>設定はそのまま読めるが、名前が変わる（<code>permission</code> → <code>permissions</code>、<code>bash</code> → <code>shell</code>、<code>mcp</code> → <code>mcp.servers</code> 等）</li>
+<li>TODO は既定で無効。委ねたコマンドは背面で動く</li>
+</ul>
+</section>
+
+<section class="ch05" id="ch05">
+<h1>Claude との関係</h1>
+<ul>
+<li>2026 年 1 月ごろから、Claude の Pro・Max 契約のログイン（OAuth）を他社製の道具から使えなくなった。2 月には規約で禁止と明記されたと報じられている</li>
+<li>OpenCode で Claude を使うには、Claude Console の API キー（従量課金）が要る</li>
+</ul>
+<div class="callout callout-important"><strong>確度</strong>: この経緯は二次情報が中心で、正確な日付は確かめきれていない。</div>
+</section>
+
+<section class="ch06" id="ch06">
+<h1>評価と出典</h1>
+<h2>向き・不向き</h2>
+<ul>
+<li>向く: 複数の LLM を使い分けたい、ローカル・社内の LLM を使いたい、外部から自動化したい</li>
+<li>向かない: Claude の定額契約だけで使いたい（その用途は Claude Code が前提）</li>
+</ul>
+<h2>調べきれなかったこと</h2>
+<ul>
+<li>会話の共有（share）機能: 公式資料のページが見つからない（404）。何がどこへ上がるか不明</li>
+<li>テレメトリ: OpenCode 自身が利用データを送るかの公式の説明が見つからない</li>
+<li>X 上の噂: 見ていない</li>
+<li>分裂についての SST 側本人の発言: 見つからない</li>
+</ul>
+<h2>出典</h2>
+<ul>
+<li><a href="https://github.com/anomalyco/opencode">anomalyco/opencode（GitHub）</a></li>
+<li><a href="https://opencode.ai/docs">OpenCode Docs</a></li>
+<li><a href="https://opencode.ai/docs/server">OpenCode Docs: Server</a></li>
+<li><a href="https://opencode.ai/docs/permissions">OpenCode Docs: Permissions</a></li>
+<li><a href="https://opencode.ai/docs/mcp-servers">OpenCode Docs: MCP servers</a></li>
+<li><a href="https://opencode.ai/docs/lsp">OpenCode Docs: LSP</a></li>
+<li><a href="https://opencode.ai/docs/config">OpenCode Docs: Config</a></li>
+<li><a href="https://opencode.ai/docs/rules">OpenCode Docs: Rules</a></li>
+<li><a href="https://opencode.ai/docs/network">OpenCode Docs: Network</a></li>
+<li><a href="https://github.com/anomalyco/opencode/blob/HEAD/services/www/src/docs/content/migrate-v1.mdx">OpenCode: 版 1 からの移行（GitHub）</a></li>
+<li><a href="https://techcrunch.com/2025/04/25/anthropic-sent-a-takedown-notice-to-a-dev-trying-to-reverse-engineer-its-coding-tool/">TechCrunch: Anthropic の DMCA 削除要求（2025-04-25）</a></li>
+<li><a href="https://nodesource.com/blog/anthropic-claude-code-source-leak-bun-bug">NodeSource: Claude Code のソース流出</a></li>
+<li><a href="https://pasqualepillitteri.it/en/news/581/claude-code-source-leak-npm-512000-lines">Claude Code Source Code Is Online: 512,000 Lines</a></li>
+<li><a href="https://habr.com/en/articles/1018234">Habr: OpenClaude</a></li>
+<li><a href="https://morphllm.com/comparisons/opencode-vs-claude-code">OpenCode vs Claude Code（morphllm）</a></li>
+<li><a href="https://rywalker.com/research/opencode">rywalker.com: OpenCode</a></li>
+<li><a href="https://www.heyuan110.com/posts/ai/2026-03-13-opencode-ai-coding-agent-review">heyuan110: OpenCode review</a></li>
+<li><a href="https://noqta.tn/en/blog/opencode-open-source-ai-coding-agent-developer-guide-2026">noqta: developer guide 2026</a></li>
+<li><a href="https://falcao.org/posts/anthropic-claude-access-crackdown-ecosystem-fallout/">Anthropic's Third-Party Claude Crackdown（falcao.org）</a></li>
+<li><a href="https://alternativeto.net/news/2026/2/anthropic-officially-bans-using-subscription-authentication-for-third-party-claude-use">alternativeto: subscription auth ban</a></li>
+<li><a href="https://www.sovereignmagazine.com/article/anthropic-blocks-openclaw-claude-subscriptions">Sovereign Magazine</a></li>
+<li><a href="https://hn.svelte.dev/item/44483251">Hacker News スレッド（Charm と OpenCode の分裂）</a></li>
+<li><a href="https://rywalker.com/research/crush">rywalker.com: Crush</a></li>
+<li><a href="https://horadecodar.com.br/opencode-reddit/">horadecodar.com.br: OpenCode no Reddit</a></li>
+<li><a href="https://www.sovereignmagazine.com/article/anthropic-claude-code-source-code-leak">Sovereign Magazine: Claude Code source code leak</a></li>
+<li><a href="https://blog.kilo.ai/p/claude-code-source-leak-a-timeline">Claude Code Source Leak: A Timeline（Kilo）</a></li>
+<li><a href="https://www.opensourceforu.com/2026/04/anthropic-leak-exposes-claude-code-as-an-open-source-learning-event/">Open Source For You</a></li>
+</ul>
+</section>
+</div>
+<footer><a class="back-home" href="../" title="親サイトへ">⌂</a></footer>
+</body>
+</html>
